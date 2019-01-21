@@ -1,72 +1,177 @@
 <template>
-    <section>
+    <section style="margin:0 20px">
       <div style="text-align: center;font-size: 30px;font-weight:bold;margin: 50px 0;color: #3c3c3c;">未授权设备</div>
 
       <div class="sort" style="margin-top: -20px;">
         <div>
           <ul class="clearfix typesort" data-bind="typesort">
             <li><span>类型:</span></li>
-
+            <li style="line-height: 35px;cursor:pointer;" v-for = "item in  sort.type " :key="item">
+              <span>{{item}}</span>
+            </li>
           </ul>
         </div>
         <div>
           <ul class="clearfix hardwaresort" data-bind="hardwaresort">
             <li><span>硬件供应商:</span></li>
+            <li style="line-height: 35px;cursor:pointer;"  v-for = "item in  sort.hardwareprovider " :key="item">
+              <span>{{item}}</span>
+            </li>
           </ul>
         </div>
         <div>
           <ul class="clearfix softwaresort" data-bind="softwaresort">
             <li><span>软件供应商:</span></li>
+            <li style="line-height: 35px;cursor:pointer;"  v-for = "item in  sort.softwareprovider " :key="item">
+              <span>{{item}}</span>
+            </li>
           </ul>
         </div>
       </div>
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>活动管理</el-breadcrumb-item>
-        <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-        <el-breadcrumb-item>活动详情</el-breadcrumb-item>
-      </el-breadcrumb>
+      <div style="padding: 10px;">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item style="line-height: 24px">所有分类</el-breadcrumb-item>
+          <el-tag
+            size="small"
+            style="margin-right: 10px"
+            v-for="tag in tags"
+            :key="tag.name"
+            closable
+            :type="tag.type">
+            {{tag.name}}
+          </el-tag>
+        </el-breadcrumb>
+      </div>
 
       <el-table
         :data="tableData"
         border
-        height="250"
+        default-expand-all="true"
         style="width: 100%">
         <el-table-column
           fixed
-          prop="date"
-          label="日期"
-          width="150">
+          prop="type"
+          label="#"
+          align="center">
         </el-table-column>
         <el-table-column
-          prop="name"
-          label="姓名"
-          width="120">
+          prop="type"
+          label="类型"
+          align="center">
         </el-table-column>
         <el-table-column
-          prop="province"
-          label="省份"
-          width="120">
+          prop="id"
+          label="ID"
+          align="center">
         </el-table-column>
         <el-table-column
-          prop="city"
-          label="市区"
-          width="120">
+          prop="randcode"
+          label="RandCode"
+          align="center">
         </el-table-column>
         <el-table-column
-          prop="address"
-          label="地址"
-          width="300">
+          prop="hardwareprovider"
+          label="硬件供应商"
+          align="center"
+          >
         </el-table-column>
         <el-table-column
-          prop="zip"
-          label="邮编"
-          width="120">
+          prop="hardwaresn"
+          label="硬件SN"
+          align="center">
+        </el-table-column>
+        <el-table-column
+          prop="hardwareversion"
+          label="硬件版本"
+          width="200"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="softwareprovider"
+          label="软件供应商"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="softwareversion"
+          label="软件版本"
+          width="200"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="cpu"
+          label="CPU"
+          width="100"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="imei"
+          label="IMEI"
+          width="200"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="mac"
+          label="MAC"
+          width="200"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="osid"
+          label="系统ID"
+          width="250"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="ostype"
+          label="系统类型"
+          width="250"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="osversion"
+          label="系统版本"
+          width="250"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="modelnumber"
+          label="模型编号"
+          width="250"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="serialnumber"
+          label="序列号"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="sessionid"
+          label="SessionID"
+          width="400"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="userlabel"
+          label="用户认证标签"
+          width="400"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="clienthost"
+          label="客户端IP"
+          width="150"
+          >
+        </el-table-column>
+        <el-table-column
+          prop="desc"
+          label="描述"
+          width="150"
+          >
         </el-table-column>
         <el-table-column
           fixed="right"
           label="操作"
-          width="100">
+          >
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
             <el-button type="text" size="small">编辑</el-button>
@@ -136,15 +241,14 @@
         <!--&lt;!&ndash;底部授权部分结束&ndash;&gt;-->
       <!--</div>-->
       <div class="block">
-        <span class="demonstration">完整功能</span>
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="currentPage4"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="10"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="400">
+          :total="pagetotal">
         </el-pagination>
       </div>
     </section>
@@ -162,49 +266,50 @@ export default {
     },
     handleCurrentChange (val) {
       console.log(`当前页: ${val}`)
+    },
+    get_register () {
+      this.$http.post(this.$store.state.url.GET_REGISTER_URL, {
+        access_token: this.$store.state.access_token,
+        'page': 0,
+        'page_size': 10
+      }).then((data) => {
+        this.tableData = data.data.registers
+      })
     }
   },
 
   data () {
     return {
-      tableData: [{
-        date: '2016-05-03',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-02',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }],
-      currentPage1: 5,
-      currentPage2: 5,
-      currentPage3: 5,
-      currentPage4: 4
+      pagetotal: 100,
+      tableData: [],
+      tags: [
+        { name: this.$store.state.url['baidu'], type: 'success' },
+        { name: '标签二', type: 'success' },
+        { name: '标签三', type: 'success' },
+        { name: '标签四', type: 'success' },
+        { name: '标签五', type: 'success' }
+      ],
+      sort: {'type': [], 'hardwareprovider': [], 'softwareprovider': []}
     }
+  },
+  created () {
+    this.$http.post(this.$store.state.url.GET_REGISTER_LIST_FILTER_INFO, {
+    }).then((data) => {
+      this.sort['type'] = data.data.type
+      this.sort['hardwareprovider'] = data.data.hardwareprovider
+      this.sort['softwareprovider'] = data.data.softwareprovider
+    })
+    this.get_register()
   }
 }
 </script>
 
 <style scoped>
-
+.block{
+  padding-left: 230px;
+  position: fixed;
+  bottom:0;
+  left: 50%;
+  transform: translateX(-50%);
+}
 </style>

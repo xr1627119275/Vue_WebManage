@@ -71,7 +71,7 @@
       <header>
         <ul class="clearfix">
           <li><a href="#">Test</a></li>
-          <li class="user"><a href="#" id="username" data-toggle="dropdown" style="" v-text="username"> <i
+          <li class="user"><a href="#" id="username" data-toggle="dropdown" style="" v-text="$store.state.CurrentUserName"> <i
             class="fa fa-angle-down"></i></a>
             <ul class="a_list">
               <li><a href="javascript:;" >退出</a></li>
@@ -90,19 +90,18 @@
 export default {
   data () {
     return {
-      username: 123
     }
   },
   name: 'index',
   created () {
-    this.axios('https://cert.besovideo.com:20443/api/v1/api_login/', {
-
-    }).then(function (res) {
-
-    }).catch(function (error) {
+    this.$http.post(this.$store.state.url.GET_LOGIN_MSG_URL, {
+      access_token: this.$store.state.access_token
+    }).then((res) => {
+      this.$store.commit('setUserName', res.data.username)
+      this.$store.commit('setUserId', res.data.user_id)
+    }).catch((error) => {
       console.log(error)
     })
-    this.username = 456
   }
 
 }
